@@ -1,7 +1,9 @@
 # HDR Light Field Capture
-Hardware and software for capturing Hight Dynamic Range light fields
+Hardware and software for capturing Hight Dynamic Range light fields.
 
 ![](image/header.jpg)
+
+The setup consists of an Arduino used to control the Stepper Motor and a Raspberry Pi used to send instructions to the Arduino and capture/recieve images from the camera.
 
 ## Arduino
 
@@ -11,21 +13,29 @@ Hardware and software for capturing Hight Dynamic Range light fields
 
 The Stepper Driver used in this setup is DQ542MA and the Stepper Motor used is NEMA 17 42BYGH-W811.
 
-Connection Driver to Arduino:
+Connection between Stepper Driver and Arduino:
 * PUL+ from Driver to Arduino PIN7
 * PUL- from Driver to Arduino PIN5
 * DIR+ from Driver to Arduino PIN7
 * DIR- from Driver to Arduino PIN6
 * ENBL+ from Driver to Arduino PIN7
 
-Connection Driver to Stepper:
+Connection between Stepper Driver and Stepper Motor:
 * A+ from Driver to Stepper BLACK wire
 * A- from Driver to Stepper GREEN wire
 * B+ from Driver to Stepper RED wire
 * B- from Driver to Stepper BLUE wire
 
-Connection Button to Arduino:
+Connection between Button and Arduino:
 * Button YELLOW wire to Arduino PINA0
+
+### DIP Switch Setting
+
+![](image/switch.jpg)
+
+The first three bits of the DIP switch are used to set the dynamic current. For an output current of 2.37A, SW 1, 2, 3 is set to OFF, OFF, ON.
+
+Micro step resolution is set by the last four bits of the DIP switch. For 1600 pulse per revolution, SW 5, 6, 7, 8 is set to OFF, OFF, ON, ON.
 
 ### Power Supply
 
@@ -52,6 +62,15 @@ Installing pySerial for python3 with pip:
 
 ```sh
 sudo pip3 install pyserial
+```
+
+### Usage Examples
+
+Specify the port and baud rate for the serial communication between Arduino and Raspberry Pi in `python/camera.py`:
+
+```python
+port = '/dev/ttyACM0'
+baud_rate = 9600
 ```
 
 ## Release History
