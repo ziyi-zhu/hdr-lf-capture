@@ -88,6 +88,17 @@ from merge import merge_light_field
 merge_light_field(capture_path, camera_name, N_EXPOSURES)
 ```
 
+## GUI
+
+![](image/gui.jpg)
+
+GUI allows for basic motor and camera control:
+* Motor speed can be set from 1 to 10. 
+* Camera location can range from 0 to 100.
+* Click `Reset` to reset the speed and location of the motor.
+* Click `Capture` to capture a single image.
+* Click `Capture 3D` to capture hdr light field.
+
 ## Release History
 
 * 0.1.0
