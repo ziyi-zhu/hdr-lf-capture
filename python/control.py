@@ -6,14 +6,15 @@ import subprocess
 
 import gphoto2 as gp
 
-from merge import merge_light_field
+# from merge import merge_light_field
 
 # parameters for hdr light field capture
-N_LOCATIONS = 10
+N_LOCATIONS = 11
 N_EXPOSURES = 3
 
 camera_name = 'SonyA7r1'
-capture_path = os.path.join('home', 'pi', 'Pictures', 'capture')
+capture_path = '/home/pi/Pictures/capture'
+# hdr_merging = False
 
 def list_files(camera, path='/'):
     result = []
@@ -167,6 +168,7 @@ class CameraControl:
 
     def capture_3d(self):
         self.ser.write(b'm0')
+        self.current_location.configure(text="0")
 
         for capture_location in range(N_LOCATIONS):
             gp.check_result(gp.gp_camera_init(self.camera))
@@ -175,7 +177,7 @@ class CameraControl:
             gp.check_result(gp.gp_camera_trigger_capture(self.camera))
             
             if capture_location is not N_LOCATIONS-1:
-                self.ser.write(b'm' + str((capture_location+1)*(100/(N_LOCATIONS-1))).encode('UTF-8'))
+                self.ser.write(b'm' + str((capture_location+1)*(100//(N_LOCATIONS-1))).encode('UTF-8'))
                 
             file_number = 0   
             while file_number < N_EXPOSURES:
@@ -197,6 +199,7 @@ class CameraControl:
             gp.check_result(gp.gp_camera_exit(self.camera))
 
         self.ser.write(b'm0')
-        merge_light_field(capture_path, camera_name, N_EXPOSURES)
+        # if hdr_merging is True:
+        #     merge_light_field(capture_path, camera_name, N_EXPOSURES)
 
         self.status_label.configure(text="Finished")

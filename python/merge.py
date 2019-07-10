@@ -85,7 +85,7 @@ def merge_light_field(data, cam_name, num_exposures):
 	if not os.path.exists(output_dir):
 		os.mkdir(output_dir)
 
-	all_files = os.listdir(f'{data}/')
+	all_files = os.listdir(data + '/')
 	for i in range(len(all_files) // num_exposures):
 		files = [os.path.join(data, "{:03d}-{}.arw".format(i, f)) for f in range(num_exposures)]
 		output_filename = os.path.join(output_dir, "{:03d}.exr".format(i))

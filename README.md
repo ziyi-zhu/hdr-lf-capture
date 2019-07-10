@@ -52,15 +52,10 @@ Installing libgphoto2:
 sudo apt-get install libgphoto2-dev
 ```
 
-Installing python-gphoto2 for python3 with pip:
+Installing python-gphoto2 and pySerial for python3 with pip:
 
 ```sh
 sudo pip3 install gphoto2
-```
-
-Installing pySerial for python3 with pip:
-
-```sh
 sudo pip3 install pyserial
 ```
 
@@ -71,6 +66,26 @@ Specify the port and baud rate for the serial communication between Arduino and 
 ```python
 port = '/dev/ttyACM0'
 baud_rate = 9600
+```
+
+Set the parameters for HDR Light Field capture in `python/control.py`:
+
+```python
+# parameters for hdr light field capture
+N_LOCATIONS = 11
+N_EXPOSURES = 3
+
+camera_name = 'SonyA7r1'
+capture_path = '/home/pi/Pictures/capture'
+# hdr_merging = False
+```
+
+(Optional) Merge the captured images into HDR light field (requires OpenCV):
+
+```python
+from merge import merge_light_field
+
+merge_light_field(capture_path, camera_name, N_EXPOSURES)
 ```
 
 ## Release History
