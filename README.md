@@ -3,7 +3,7 @@ Hardware and software for capturing Hight Dynamic Range light fields.
 
 ![](image/header.jpg)
 
-The setup consists of an Arduino used to control the Stepper Motor and a Raspberry Pi used to send instructions to the Arduino and capture/recieve images from the camera.
+The setup consists of an Arduino used to control the Stepper Motor and a Raspberry Pi used to send instructions to the Arduino and capture/receive images from the camera.
 
 ## Arduino
 
