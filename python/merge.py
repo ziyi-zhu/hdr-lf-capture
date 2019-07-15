@@ -24,6 +24,7 @@ Reconstruct HDR images from multiple LDR images
 filenames - list of filenames with extensions of raw images
 cam - camera noise parameters
 output_filename - output HDR filename with extension
+
 """
 def merge(filenames, cam, output_filename):
 	# Read raw images wihtout gamma
@@ -73,6 +74,7 @@ Merge HDR light field images
 data - directory containing all the images
 cam_name - name of camera used, to use noise parameters
 num_exposures - number of different exposures used for a single HDR image
+
 """
 def merge_light_field(data, cam_name, num_exposures):
 	try:
