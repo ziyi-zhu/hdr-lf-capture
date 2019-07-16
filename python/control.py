@@ -56,9 +56,13 @@ n_views - number of views for the capture
 n_exposures - number of exposures for the camera bracketing mode
 
 """
-def camera_capture_light_field(camera, ser, n_views, n_exposures, path='/tmp'):
+def camera_capture_light_field(camera, ser, n_views, n_exposures, stops=1.0, path='/tmp'):
     # initialize camera location
     ser.write(b'm0')
+    # check and create output dirctory for capture
+    output_dir = os.path.join(path, "capture")
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
     # capture process
     for capture_location in range(n_views):
         # initialize camera
@@ -78,8 +82,11 @@ def camera_capture_light_field(camera, ser, n_views, n_exposures, path='/tmp'):
             file_list = list_files(camera)
             # save the new file
             if len(file_list) is not file_number:
-                target = os.path.join(path, "{:03d}-{:d}".format(
-                        capture_location, file_number) + file_list[file_number][-4:])
+                # file format: capt-<sequence>-<distance(mm)>[<exposure(EV)>].arw
+                # e.g. capt-001-0100[-2.0].arw
+                target = os.path.join(output_dir, "capt-{:0>3d}-{:0>4d}[{:+.1f}]".format(
+                        capture_location, int(capture_location*(1000/(n_views-1))),
+                        stops*(file_number-n_exposures//2)) + file_list[file_number][-4:])
                 camera_file = gp.check_result(gp.gp_camera_file_get(
                         camera, '/', file_list[file_number][1:], gp.GP_FILE_TYPE_NORMAL))
                 gp.check_result(gp.gp_file_save(camera_file, target))
