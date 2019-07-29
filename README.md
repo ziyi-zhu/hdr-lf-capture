@@ -68,15 +68,10 @@ port = '/dev/ttyACM0'
 baud_rate = 9600
 ```
 
-Set the parameters for HDR Light Field capture in `python/control.py`:
+Set the parameters for HDR Light Field capture in `python/gui.py`:
 
 ```python
-# parameters for hdr light field capture
-N_LOCATIONS = 11
-N_EXPOSURES = 3
-
 camera_name = 'SonyA7r1'
-capture_path = '/home/pi/Pictures/capture'
 # hdr_merging = False
 ```
 
@@ -85,7 +80,7 @@ capture_path = '/home/pi/Pictures/capture'
 ```python
 from merge import merge_light_field
 
-merge_light_field(capture_path, camera_name, N_EXPOSURES)
+merge_light_field(capture_path, camera_name, n_exposures)
 ```
 
 ## GUI

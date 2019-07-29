@@ -64,7 +64,7 @@ class CameraControlGUI:
         self.location_right_button.grid(column=3, row=1, sticky="ewns")
         self.reset_button.grid(column=4, row=1, sticky="ewns")
 
-        # GUI for movement of camera to designated location
+        # GUI for moving of camera to designated location
         """
         self.destination_label = Label(master, text="Move to location:")
         self.current_destination = Label(master, text="0")
