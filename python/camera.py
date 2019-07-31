@@ -7,5 +7,5 @@ baud_rate = 9600
 if __name__ == '__main__':
     root = Tk()
     app = CameraControlGUI(root, port, baud_rate)
-    app.master.attributes("-fullscreen", False)
+    app.master.attributes('-type', 'splash')
     root.mainloop()

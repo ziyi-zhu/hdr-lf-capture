@@ -1,4 +1,4 @@
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from tkinter import *
 
 import serial
@@ -87,28 +87,45 @@ class CameraControlGUI:
         """
 
         # GUI for setting light field capture parameters
+        self.stop_label = Label(master, text="Exposure stops:")
+        self.stop_label.grid(column=0, row=3)
+
+        self.stops = DoubleVar()
+        self.stops.set(2.0)
+
+        self.half_stop_button = Radiobutton(
+                master, text="0.5EV", variable=self.stops, value=0.5, height=3, width=10)
+        self.one_stop_button = Radiobutton(
+                master, text="1.0EV", variable=self.stops, value=1.0, height=3, width=10)
+        self.two_stop_button = Radiobutton(
+                master, text="2.0EV", variable=self.stops, value=2.0, height=3, width=10)
+
+        self.half_stop_button.grid(column=2, row=3, sticky="ewns")
+        self.one_stop_button.grid(column=3, row=3, sticky="ewns")
+        self.two_stop_button.grid(column=4, row=3, sticky="ewns")
+
         self.exposure_label = Label(master, text="Capture exposures:")
-        self.exposure_label.grid(column=0, row=3)
+        self.exposure_label.grid(column=0, row=4)
 
         self.exposures = IntVar()
         self.exposures.set(3)
 
         self.single_exposure_button = Radiobutton(
-                master, text="Single Image", variable=self.exposures, value=1, height=3, width=10)
+                master, text="Single Image", variable=self.exposures, command=self.change_exposure, value=1, height=3, width=10)
         self.three_exposure_button = Radiobutton(
-                master, text="3 Image", variable=self.exposures, value=3, height=3, width=10)
+                master, text="3 Image", variable=self.exposures, command=self.change_exposure, value=3, height=3, width=10)
         self.five_exposure_button = Radiobutton(
-                master, text="5 Image", variable=self.exposures, value=5, height=3, width=10)
+                master, text="5 Image", variable=self.exposures, command=self.change_exposure, value=5, height=3, width=10)
 
-        self.single_exposure_button.grid(column=2, row=3, sticky="ewns")
-        self.three_exposure_button.grid(column=3, row=3, sticky="ewns")
-        self.five_exposure_button.grid(column=4, row=3, sticky="ewns")
+        self.single_exposure_button.grid(column=2, row=4, sticky="ewns")
+        self.three_exposure_button.grid(column=3, row=4, sticky="ewns")
+        self.five_exposure_button.grid(column=4, row=4, sticky="ewns")
 
         self.view_label = Label(master, text="Capture views:")
         self.current_view = Label(master, text="5", width=4)
 
-        self.view_label.grid(column=0, row=4)
-        self.current_view.grid(column=1, row=4)
+        self.view_label.grid(column=0, row=5)
+        self.current_view.grid(column=1, row=5)
 
         self.views = IntVar()
         self.views.set(5)
@@ -118,29 +135,29 @@ class CameraControlGUI:
         self.view_right_button = Button(
                 master, command=self.increase_view, text=">", height=3, width=10)
 
-        self.view_left_button.grid(column=2, row=4, sticky="ewns")
-        self.view_right_button.grid(column=3, row=4, sticky="ewns")
+        self.view_left_button.grid(column=2, row=5, sticky="ewns")
+        self.view_right_button.grid(column=3, row=5, sticky="ewns")
 
         self.view_set_button = Button(
-                master, command=self.set_view, text="Set", height=3, width=10)
-        self.view_set_button.grid(column=4, row=4, sticky="ewns")
+                master, command=self.reset_view, text="Reset", height=3, width=10)
+        self.view_set_button.grid(column=4, row=5, sticky="ewns")
 
 
         # GUI for camera control
         self.status_label = Label(master, text="Stopped")
-        self.status_label.grid(column=0, row=5)
+        self.status_label.grid(column=0, row=6)
 
         self.capture_image_button = Button(
                 master, command=self.capture_image, text="Capture", height=3, width=10)
-        self.capture_image_button.grid(column=2, row=5, sticky="ewns")
+        self.capture_image_button.grid(column=2, row=6, sticky="ewns")
 
         self.capture_light_field_button = Button(
                 master, command=self.capture_light_field, text="Capture LF", height=3, width=10)
-        self.capture_light_field_button.grid(column=3, row=5, sticky="ewns")
+        self.capture_light_field_button.grid(column=3, row=6, sticky="ewns")
 
         self.exit_button = Button(
                 master, command=master.destroy, text="Exit", height=3, width=10)
-        self.exit_button.grid(column=4, row=5, sticky="ewns")
+        self.exit_button.grid(column=4, row=6, sticky="ewns")
 
     def increase_speed(self):
         new_speed = int(self.current_speed.cget("text")) + 1
@@ -188,13 +205,35 @@ class CameraControlGUI:
     def increase_view(self):
         new_view = int(self.current_view.cget("text")) + 1
         self.current_view.configure(text=str(new_view))
+        self.views.set(new_view)
 
     def decrease_view(self):
         new_view = int(self.current_view.cget("text")) - 1
         self.current_view.configure(text=str(new_view))
+        self.views.set(new_view)
 
-    def set_view(self):
-        self.views.set(int(self.current_view.cget("text")))
+    def reset_view(self):
+        self.current_view.configure(text="5")
+        self.views.set(5)
+
+    def change_exposure(self):
+        if self.exposures.get() is 1:
+            self.half_stop_button.configure(state = DISABLED)
+            self.one_stop_button.configure(state = DISABLED)
+            self.two_stop_button.configure(state = DISABLED)
+        else:
+            self.half_stop_button.configure(state = NORMAL)
+            self.one_stop_button.configure(state = NORMAL)
+            self.two_stop_button.configure(state = NORMAL)
+
+    def show_info(self):
+        if self.exposures.get() is 1:
+            drive_mode = "Single Shooting"
+        else:
+            drive_mode = "Cont. Bracket: " + "{:.1f}EV {} Image".format(
+                    self.stops.get(), self.exposures.get())
+        lines = ['Drive Mode - ' + drive_mode, 'Focus Mode - Manual Focus', 'AF w/ shutter - Off', 'AEL w/ shutter - Off']
+        messagebox.showinfo('Change Camera Settings', "\n".join(lines))
 
     def capture_image(self):
         camera_capture_image(self.camera)
@@ -202,9 +241,11 @@ class CameraControlGUI:
 
     def capture_light_field(self):
         capture_path = filedialog.askdirectory()
+        self.show_info()
         camera_capture_light_field(self.camera, self.ser, self.views.get(), self.exposures.get(), 
-                2.0, capture_path)
+                self.stops.get(), capture_path)
         # if hdr_merging is True:
         #     merge_light_field(capture_path, camera_name, self.exposures.get())
         self.current_location.configure(text="0")
+        process = self.ser.readline()
         self.status_label.configure(text="Finished")
