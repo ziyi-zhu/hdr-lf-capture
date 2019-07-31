@@ -88,14 +88,20 @@ merge_light_field(capture_path, camera_name, n_exposures)
 ![](image/gui.jpg)
 
 GUI allows for basic motor and camera control:
-* Motor speed can be set from 1 to 10. 
+* Motor speed can be set from 1 to 10. (disabled)
 * Camera location can range from 0 to 100.
-* Click `Reset` to reset the speed and location of the motor.
+* Number of exposures and stops can be set according to camera settings.
+* Number of views can range from 1 to 101.
 * Click `Capture` to capture a single image.
-* Click `Capture 3D` to capture hdr light field.
+* Click `Capture LF` to capture HDR light field.
+
+Uncomment relevant code in `python/gui.py` to enable different controls.
 
 ## Release History
 
+* 0.2.0
+    * Edited code structure and added more controls
+    * CHANGE: Seperate `control.py` into and `control.py` and `gui.py`
 * 0.1.0
     * The first proper release
     * CHANGE: Add `arduino` and `python`
