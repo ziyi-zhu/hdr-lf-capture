@@ -79,7 +79,6 @@ camera_name = 'SonyA7r1'
 
 ```python
 from merge import merge_light_field
-
 merge_light_field(capture_path, camera_name, n_exposures)
 ```
 
@@ -89,9 +88,9 @@ merge_light_field(capture_path, camera_name, n_exposures)
 
 GUI allows for basic motor and camera control:
 * Motor speed can be set from 1 to 10. (disabled)
-* Camera location can range from 0 to 100.
+* Camera location can range from 0 to 1000.
 * Number of exposures and stops can be set according to camera settings.
-* Number of views can range from 1 to 101.
+* Number of views can range from 1 to 1001.
 * Click `Capture` to capture a single image.
 * Click `Capture LF` to capture HDR light field.
 

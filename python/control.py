@@ -78,7 +78,7 @@ def camera_capture_light_field(camera, ser, n_views, n_exposures, stops=2.0, pat
         gp.check_result(gp.gp_camera_trigger_capture(camera))
         # move to the next location
         if capture_location is not n_views-1:
-            ser.write(b'm' + str((capture_location+1)*(100//(n_views-1))).encode('UTF-8'))
+            ser.write(b'm' + str((capture_location+1)*(1000//(n_views-1))).encode('UTF-8'))
         # save the captured files to path    
         file_number = 0
         while file_number < n_exposures:
